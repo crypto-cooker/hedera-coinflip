@@ -150,6 +150,14 @@ main {
   color: #83ff49;
 }
 
+.text-purple {
+  color: #952cff !important;
+}
+
+.text-green {
+  color: #83ff49 !important;
+}
+
 .wallet-adapter-button {
   background: transparent!important;
   transition: all .25s ease!important;
@@ -224,7 +232,17 @@ footer ul li a {
   align-items: center;
 }
 
-
+.bet-selecte .coin-box:hover:before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  width: 100px;
+  height: 100px;
+  margin-top: 10px;
+  background: radial-gradient(50% 50% at 50% 50%,rgba(82,255,0,.3) 0,rgba(250,255,0,0) 100%);
+}
 
 
 

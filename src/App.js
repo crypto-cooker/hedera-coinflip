@@ -5,6 +5,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 
 import { HashConnect } from 'hashconnect';
+import { useState } from 'react';
 
 let hashconnect = new HashConnect(true);
 const appMetaData = {
@@ -24,6 +25,9 @@ let saveData = {
 
 function App() {
 
+  const [paringData, setParingDAta] = useState(null);
+  const [hbarBalance, setHbarBalance] = useState(0);
+  const [selectedOption, setSelectedOption] = useState(0);
   const connectWallet = async () => {
     let initData = await hashconnect.init(appMetaData, "testnet", false);
     console.log(initData)
@@ -36,10 +40,8 @@ function App() {
     hashconnect.connectToLocalWallet(saveData.pairingString);
     
     hashconnect.pairingEvent.once(pairingData => {
-      console.log(pairingData,"pairingData")
-      // pairingData.accountIds.forEach(id => {
-      //   //console.log("conneecctgted",id);
-      // });
+      console.log(paringData);
+      setParingDAta(paringData)
     })
   }
   return (
