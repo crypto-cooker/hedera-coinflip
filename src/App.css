@@ -39,6 +39,7 @@
 	left:0;
 	bottom: 0;
 	right: 0;
+  z-index: -1;
 }
 
 .stars {
@@ -192,8 +193,6 @@
 }
 
 main {
-  color: #ccc;
-  position: relative;
   margin-top: 22px;
   z-index: 5;
 }
@@ -367,32 +366,27 @@ main {
   color: #83ff49;
 }
 
-footer {
+header {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 18px;
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 3;
-  width: calc(100% - 36px);
+  z-index: 10;
 }
 
-footer ul {
+header ul {
   display: flex;
   list-style: none;
   flex-wrap: wrap;
   padding: 0px;
 }
 
-footer ul li {
+header ul li {
   margin-left: 16px;
   margin-right: 16px;
 }
 
-footer ul li a {
+header ul li a {
   text-decoration: none;
   text-transform: uppercase;
   font-family: MyFont;
@@ -403,6 +397,8 @@ footer ul li a {
   color: #4aff2c;
   display: flex;
   align-items: center;
+  cursor: pointer;
+  /* text-shadow: .22586px 0 17.4686px rgba(106,255,82,.67) */
 }
 
 /* .bet-selecte .coin-box:hover:before {
@@ -441,6 +437,7 @@ footer ul li a {
 
 .App-header {
   background-color: #282c34;
+  z-index: 0;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
