@@ -5,9 +5,17 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 
 import { HashConnect } from 'hashconnect';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 let hashconnect = new HashConnect(true);
+if(hashconnect) {
+  hashconnect.foundExtensionEvent.once((walletMetadata) => {
+    console.log(walletMetadata, "walletMetadata");
+  })
+  hashconnect.pairingEvent.once((pairingData) => {
+    console.log(pairingData)
+  }) 
+}
 const appMetaData = {
   name: "HashPack",
   description: "A HBAR wallet",
@@ -25,24 +33,32 @@ let saveData = {
 
 function App() {
 
-  const [paringData, setParingDAta] = useState(null);
+  const [pairingData, setPairingData] = useState(null);
   const [hbarBalance, setHbarBalance] = useState(0);
   const [selectedOption, setSelectedOption] = useState(0);
+  useEffect(() => {
+    const findWallets = () => {
+      console.log(hashconnect.hcData, "localstorage");
+      const data = hashconnect.init(appMetaData, "testnet", false);
+      if(data) setPairingData(data)
+    }
+    
+    if(pairingData==null) {
+      findWallets()
+    }
+  }, [hashconnect, pairingData])
+
   const connectWallet = async () => {
     let initData = await hashconnect.init(appMetaData, "testnet", false);
-    console.log(initData)
+    console.log(initData, "initData")
     let state = await hashconnect.connect();
     console.log(state,"state")
 
     saveData.pairingString = await hashconnect.generatePairingString(state, "testnet", false)
-    const result =hashconnect.findLocalWallets();
-    console.log(result);
+    const result = await hashconnect.findLocalWallets();
+    console.log(result, "REsult");
     hashconnect.connectToLocalWallet(saveData.pairingString);
-    
-    hashconnect.pairingEvent.once(pairingData => {
-      console.log(paringData);
-      setParingDAta(paringData)
-    })
+    console.log(hashconnect.hcData.savedPairings, "DDFF")
   }
   return (
     <div className="App">
@@ -51,28 +67,33 @@ function App() {
         <div className="container">
           <div className="main-content">
             <div className="flip-box">
-              <div className="coins">
-                <img src="./images/logo.png" alt="" data-xblocker="passed" />
-              </div>
-              <p className="bet-on-title">I BET ON</p>
-              <div className="bet-selecte">
-                <div className="coin-box">
-                  <img src="./images/logo.png" alt="" />
-                  <p className="text-green">HEADS</p>
+              
+              <p className="bet-on-title">SAUCE-FLIP</p>
+              <div className='flip-inner-box'>
+                {!pairingData && <div className='logo-img-section'><img className='logo-img' src="./images/logo.png" alt="SAUCE-FLIP" /></div>}
+                {pairingData && <div className="bet-selecte">
+                  <div className="coin-box">
+                    <img src="./images/head.png" alt="" />
+                    <button className={"flip-button "+ (selectedOption==0 ? "selected":"")} onClick={()=>setSelectedOption(0)}>Heads</button>
+                  </div>
+                  <div className='or-section'>
+                    <p>OR</p>
+                  </div>
+                  <div className="coin-box">
+                    <img src="./images/tail.png" alt="" />
+                    <button className={"flip-button "+ (selectedOption==1 ? "selected":"")} onClick={()=>setSelectedOption(1)}>Tails</button>
+                  </div>
+                </div>}
+                <div className='connect-btn-section'>
+                  {!pairingData && <button className="flip-button" tabIndex="0" onClick={connectWallet}>
+                    Connect Wallet
+                  </button>}
                 </div>
-                <div className="coin-box">
-                  <img src="./images/logo.png" alt="" />
-                  <p className="text-purple">TAILS</p>
-                </div>
               </div>
-              <p className="bet-on-title">FOR</p>
-              <button className="wallet-adapter-button wallet-adapter-button-trigger" tabIndex="0" onClick={connectWallet}>
-                Select Wallet
-              </button>
             </div>
-            <div className="leaderboard">
+            {/* <div className="leaderboard">
               <h2 className="h2-plays">RECENT PLAYS (last 10 Txs)</h2>
-            </div>
+            </div> */}
           </div>
         </div>
       </main>

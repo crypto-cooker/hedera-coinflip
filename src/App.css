@@ -2,7 +2,7 @@
   font-family: "MyFont";
   font-style: normal;
   font-weight: normal;
-  src: url("../public/ShareTechMono-Regular.ttf") format("truetype");
+  src: url("../public/RoboGirls-4BzEB.ttf") format("truetype");
 }
 ::-webkit-scrollbar {
   width: 5px;
@@ -54,6 +54,16 @@
   align-items: center;
 }
 
+.logo-img-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+}
+.logo-img-section img {
+  width: 200px;
+}
+
 .header-content .header-left .logo img {
   margin-right: 12px;
 }
@@ -67,7 +77,10 @@ main {
 
 .container {
   position: relative;
-  z-index: 2;
+  z-index: 2;  
+  margin: auto;
+  width: 550px;
+
 }
 
 .main-content {
@@ -77,6 +90,8 @@ main {
 .flip-box {
   justify-content: center;
   flex-direction: column;
+  width: 80%;
+  margin: auto;
 }
 
 .flip-box .coins {
@@ -110,7 +125,7 @@ main {
   font-family: MyFont;
   font-style: normal;
   font-weight: 400;
-  font-size: 28.6035px;
+  font-size: 50px;
   line-height: 32px;
   text-shadow: -1.22586px 0 17.4686px rgba(106,255,82,.67);
   margin-bottom: 8px;
@@ -121,7 +136,8 @@ main {
 .bet-selecte {
   display: flex;
   padding: 8px;
-  border: 2px solid rgba(149,44,255,.28);
+  justify-content: center;
+  align-items: flex-end;
   border-radius: 7px;
   margin: 4px auto;
 }
@@ -137,9 +153,37 @@ main {
 }
 
 .bet-selecte .coin-box img {
-  width: 70px;
+  width: 100px;
+}
+.flip-button {
+  background-color: #83ff49;
+  padding: 10px 20px;
+  font-size: 15px;
+  border: none;
+  outline: none;
+  border-radius: 2px;
+  font-weight: bold;
+  box-shadow: -1.22586px 0 17.4686px rgba(106,255,82,.67);
+  cursor: pointer;
+  border: solid 2px transparent;
+  color: #282c34;
 }
 
+.coin-box .flip-button:hover, .flip-button.selected {
+  border: aliceblue 2px solid;
+  color: aliceblue;
+}
+
+.coin-box .flip-button {
+  margin-top: 10px;
+}
+.or-section p {
+  font-family: MyFont;
+  font-size: 30px;
+  color: #83ff49;
+  margin-bottom: 0px;
+  
+}
 .bet-selecte .coin-box p {
   font-family: MyFont;
   margin-top: 5px;
@@ -150,6 +194,20 @@ main {
   color: #83ff49;
 }
 
+.flip-box .flip-inner-box {
+  margin-top: 30px;
+  box-shadow: -1.22586px 0 17.4686px rgba(106,255,82,.67);
+  width: 100%;
+  border-radius: 3px;
+}
+.connect-btn-section {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
 .text-purple {
   color: #952cff !important;
 }
@@ -158,24 +216,6 @@ main {
   color: #83ff49 !important;
 }
 
-.wallet-adapter-button {
-  background: transparent!important;
-  transition: all .25s ease!important;
-  border-radius: 7.5px!important;
-  font-family: MyFont !important;
-  padding: 13px 9px!important;
-  font-style: normal;
-  font-weight: 400!important;
-  font-size: 24px!important;
-  line-height: 31px!important;
-  color: #83ff49!important;
-  text-shadow: -1.16355px 0 16.5807px rgba(74,255,44,.47)!important;
-  border: 1px solid #952cff!important;
-  width: 232px!important;
-  height: auto!important;
-  white-space: nowrap;
-  justify-content: center;
-}
 
 .leaderboard {
   max-width: 770px;
@@ -232,7 +272,7 @@ footer ul li a {
   align-items: center;
 }
 
-.bet-selecte .coin-box:hover:before {
+/* .bet-selecte .coin-box:hover:before {
   content: "";
   position: absolute;
   left: 50%;
@@ -242,7 +282,7 @@ footer ul li a {
   height: 100px;
   margin-top: 10px;
   background: radial-gradient(50% 50% at 50% 50%,rgba(82,255,0,.3) 0,rgba(250,255,0,0) 100%);
-}
+} */
 
 
 
