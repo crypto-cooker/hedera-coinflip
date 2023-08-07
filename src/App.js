@@ -80,7 +80,7 @@ function App() {
                   <div className="bet-selecte">
                     <div className="coin-box">
                       <img src="./images/head.png" alt="" />
-                      <button className={"flip-button "+ (selectedOption==0 ? "selected":"")} onClick={()=>setSelectedOption(0)}>Heads</button>
+                      <button className={"flip-button "+ (selectedOption==0 ? "selected":"")} onClick={()=>(setSelectedOption(0))}>Heads</button>
                     </div>
                     <div className='or-section'>
                       <p>OR</p>
@@ -95,7 +95,7 @@ function App() {
                   </div>
                   <div className='coin-select-box'>
                     {coindata.map((item, index) => <div className='coin-box'>
-                      <button className={"flip-button "+ (selectedToken==index ? "selected":"")} onClick={()=> setSelectedToken(index)}>{item.token}</button>
+                      <button className={"flip-button "+ (selectedToken==index ? "selected":"")} onClick={()=> {setSelectedToken(index); if(index!=selectedToken) setSelectedAmount(0)}}>{item.token}</button>
                     </div>)}
                   </div>
                   <div className='choose-text'>

@@ -293,7 +293,7 @@ main {
   border: solid 2px transparent;
   color: #282c34;
 }
-.connect-btn-section.flip-button {
+.connect-btn-section .flip-button {
   width: 80%;
 }
 
