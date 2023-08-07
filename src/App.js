@@ -10,14 +10,7 @@ import { useEffect, useState } from 'react';
 import coindata, { map } from "./constants"
 
 let hashconnect = new HashConnect(true);
-if(hashconnect) {
-  hashconnect.foundExtensionEvent.once((walletMetadata) => {
-    console.log(walletMetadata, "walletMetadata");
-  })
-  hashconnect.pairingEvent.once((pairingData) => {
-    console.log(pairingData)
-  }) 
-}
+
 const appMetaData = {
   name: "HashPack",
   description: "A HBAR wallet",
@@ -32,8 +25,6 @@ let saveData = {
   pairedWalletData: null,
   pairedAccounts: []
 }
-
-console.log(coindata);
 
 function App() {
 
@@ -51,6 +42,14 @@ function App() {
     }
     
     if(pairingData==null) {
+      if(hashconnect) {
+        hashconnect.foundExtensionEvent.once((walletMetadata) => {
+          console.log(walletMetadata, "walletMetadata");
+        })
+        hashconnect.pairingEvent.once((pairingData) => {
+          setPairingData(pairingData)
+        }) 
+      }
       findWallets()
     }
   }, [hashconnect, pairingData])
@@ -64,6 +63,12 @@ function App() {
   }
   return (
     <div className="App">
+      <div className='background-container'>
+        <img className='moon-image' src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/moon2.png" alt="" />
+        <div class="stars"></div>
+        <div class="twinkling"></div>
+        <div class="clouds"></div>
+      </div>
       {/* <Header /> */}
       <main>
         <div className="container">
