@@ -297,6 +297,12 @@ main {
   width: 80%;
 }
 
+.connect-btn-section .flip-button:hover {
+  background-color: #4aff2c;
+  opacity: 0.8;
+  color: azure;
+}
+
 .coin-box .flip-button:hover, .flip-button.selected {
   border: aliceblue 2px solid;
   color: aliceblue;
