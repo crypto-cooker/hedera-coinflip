@@ -198,9 +198,6 @@ main {
   background: transparent;
 }
 
-.coin-box .flip-button {
-  margin-top: 10px;
-}
 .or-section p, .choose-text {
   font-family: MyFont;
   font-size: 30px;
