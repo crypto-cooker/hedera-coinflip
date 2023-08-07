@@ -89,9 +89,9 @@
   animation:move-background 150s linear infinite;
 }
 
-.moon-image{
-  height: 70vh;
-  width:70vh;
+.moon-image {
+  height: 59vh;
+  width:59vh;
   position: absolute;
   z-index: 3;
   right: 20px;
@@ -294,6 +294,9 @@ main {
   border: solid 2px transparent;
   color: #282c34;
 }
+.connect-btn-section.flip-button {
+  width: 80%;
+}
 
 .coin-box .flip-button:hover, .flip-button.selected {
   border: aliceblue 2px solid;
@@ -328,6 +331,7 @@ main {
   box-shadow: -1.22586px 0 17.4686px rgba(106,255,82,.67);
   width: 100%;
   border-radius: 3px;
+  background-color:rgba(0, 0, 0, 0.5);
 }
 .connect-btn-section {
   margin-top: 30px;
