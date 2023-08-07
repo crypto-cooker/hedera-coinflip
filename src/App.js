@@ -35,22 +35,19 @@ function App() {
   const [selectedAmount, setSelectedAmount] = useState(0)
   useEffect(() => {
     const findWallets = async () => {
-      console.log(data, "localstorage");
       const data = await hashconnect.init(appMetaData, "testnet", false);
-
-      if(data.pairingData.length>0) setPairingData(data)
+      console.log(data, "GGGRRR");
+      if(data.savedPairings.length>0) setPairingData(data)
     }
     
-    if(pairingData==null) {
-      if(hashconnect) {
-        hashconnect.foundExtensionEvent.once((walletMetadata) => {
-          console.log(walletMetadata, "walletMetadata");
-        })
-        hashconnect.pairingEvent.once((pairingData) => {
-          setPairingData(pairingData)
-        }) 
-      }
-      findWallets()
+    if(hashconnect && pairingData==null) {
+      hashconnect.foundExtensionEvent.once((walletMetadata) => {
+        console.log(walletMetadata, "walletMetadata");
+      })
+      hashconnect.pairingEvent.once((pairingData) => {
+        setPairingData(pairingData)
+      })
+      findWallets() 
     }
   }, [hashconnect, pairingData])
 
@@ -63,13 +60,13 @@ function App() {
   }
   return (
     <div className="App">
-      <Header />
       <div className='background-container'>
         <img className='moon-image' src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/moon2.png" alt="" />
         <div class="stars"></div>
         <div class="twinkling"></div>
         <div class="clouds"></div>
       </div>
+      <Header />
       <main>
         <div className="container">
           <div className="main-content">
