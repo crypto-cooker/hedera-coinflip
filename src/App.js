@@ -43,10 +43,11 @@ function App() {
   const [selectedToken, setSelectedToken] = useState(0);
   const [selectedAmount, setSelectedAmount] = useState(0)
   useEffect(() => {
-    const findWallets = () => {
-      console.log(hashconnect.hcData, "localstorage");
-      const data = hashconnect.init(appMetaData, "testnet", false);
-      if(data) setPairingData(data)
+    const findWallets = async () => {
+      console.log(data, "localstorage");
+      const data = await hashconnect.init(appMetaData, "testnet", false);
+
+      if(data.pairingData.length>0) setPairingData(data)
     }
     
     if(pairingData==null) {
@@ -56,15 +57,10 @@ function App() {
 
   const connectWallet = async () => {
     let initData = await hashconnect.init(appMetaData, "testnet", false);
-    console.log(initData, "initData")
     let state = await hashconnect.connect();
-    console.log(state,"state")
-
     saveData.pairingString = await hashconnect.generatePairingString(state, "testnet", false)
     const result = await hashconnect.findLocalWallets();
-    console.log(result, "REsult");
     hashconnect.connectToLocalWallet(saveData.pairingString);
-    console.log(hashconnect.hcData.savedPairings, "DDFF")
   }
   return (
     <div className="App">

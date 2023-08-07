@@ -178,6 +178,9 @@ main {
 .bet-selecte .coin-box img {
   width: 100px;
 }
+.bet-selecte .coin-box .flip-button {
+  margin-top: 10px;
+} 
 .flip-button {
   background-color: #83ff49;
   padding: 10px 20px;
