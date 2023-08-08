@@ -172,6 +172,8 @@
 
 .coin-select-box .flip-button {
   margin: 0px 5px;
+  font-size: 12px;
+  font-weight: 900;
 }
 
 .coin-amount-box .flip-button {
@@ -212,7 +214,7 @@ main {
 .flip-box {
   justify-content: center;
   flex-direction: column;
-  width: 80%;
+  width: 87%;
   margin: auto;
 }
 
@@ -282,7 +284,7 @@ main {
 } 
 .flip-button {
   background-color: #83ff49;
-  padding: 10px 20px;
+  padding: 10px 15px;
   font-size: 15px;
   border: none;
   outline: none;
