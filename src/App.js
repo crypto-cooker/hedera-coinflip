@@ -35,7 +35,6 @@ function App() {
   useEffect(() => {
     const findWallets = async () => {
       const data = await hashconnect.init(appMetaData, "testnet", false);
-      console.log(data, "GGGRRR");
       if(data.savedPairings.length>0) setPairingData(data)
     }
     
@@ -60,10 +59,10 @@ function App() {
   return (
     <div className="App">
       <div className='background-container'>
-        <img className='moon-image' src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/moon2.png" alt="" />
+        {/* <img className='moon-image' src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/moon2.png" alt="" /> */}
         <div class="stars"></div>
         <div class="twinkling"></div>
-        <div class="clouds"></div>
+        {/* <div class="clouds"></div> */}
       </div>
       <Header />
       <main>
