@@ -41,19 +41,17 @@ hashconnect.pairingEvent.once(pairingData => {
 })
 
 export const pairClient = async () => {
-    let initData = await hashconnect.init(appMetaData, "testnet", false);
-    console.log(initData, "III")
-    if(initData.savedPairings.length == 0) {
-        hashconnect.connectToLocalWallet();
-        //hashconnect.findLocalWallets()
+    if(saveData.savedPairings.length==0) {
+        let initData = await hashconnect.init(appMetaData, "testnet", false);
+        console.log(initData, "III")
+        let state = await hashconnect.connect();
+        saveData.topic = state.topic;
+        saveData.pairingString = hashconnect.generatePairingString(state, "testnet", false);
+        hashconnect.findLocalWallets();
     } else {
         console.log("already paired")
     }
     return saveData
-}
-
-export const connectWallet = (paringStr) => {
-    hashconnect.connectToLocalWallet(paringStr);
 }
 
 export const flipHBar = async (selectedAmount, selectedOption) => {

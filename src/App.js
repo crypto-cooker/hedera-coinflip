@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 import coindata, { map } from "./constants"
 
-import { pairClient, connectWallet, flipHBar, disconnect } from './hashgraph';
+import { pairClient, flipHBar, disconnect } from './hashgraph';
 
 
 
@@ -102,7 +102,7 @@ function App() {
                   </div>
                 </>}
                 <div className='connect-btn-section'>
-                  {!pairingData && <button className="flip-button" tabIndex="0" onClick={connectWallet}>
+                  {!pairingData && <button className="flip-button" tabIndex="0" onClick={pairClient}>
                     Connect Wallet
                   </button>}
                   {pairingData && <button className="flip-button" tabIndex="0" onClick={() => flipHBar(selectedAmount,selectedOption)}>
