@@ -44,8 +44,8 @@ export const pairClient = async () => {
         hashconnect.findLocalWallets();
         hashconnect.pairingEvent.once(pairingData => {
             pairingData.accountIds.forEach(id => {
-                if(saveData.pairedAccounts.indexOf(id) === -1) 
-                    saveData.pairedAccounts.push(id);
+                if(saveData.savedPairings.indexOf(id) === -1) 
+                    saveData.savedPairings.push(id);
             })
         })
         return saveData;
