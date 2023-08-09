@@ -60,17 +60,17 @@ export const connectWallet = () => {
 
 export const flipHBar = async (selectedAmount, selectedOption) => {
     connectWallet()
-    // let provider = hashconnect.getProvider("testnet", saveData.topic, saveData.savedPairings[0].accountIds[0]);
-    // let signer = hashconnect.getSigner(provider);
-    // const flipTx = await new ContractExecuteTransaction()
-    //                 .setContractId(contractId)
-    //                 .setGas(100000)
-    //                 .setPayableAmount(selectedAmount)
-    //                 .setFunction("flipForHBar", 
-    //                   new ContractFunctionParameters()
-    //                   .addBool(selectedOption)
-    //                   .addUint256(0))
-    //                 .freezeWithSigner(signer);
-    // await flipTx.executeWithSigner(signer)
+    let provider = hashconnect.getProvider("testnet", saveData.topic, saveData.savedPairings[0].accountIds[0]);
+    let signer = hashconnect.getSigner(provider);
+    const flipTx = await new ContractExecuteTransaction()
+                    .setContractId(contractId)
+                    .setGas(100000)
+                    .setPayableAmount(selectedAmount)
+                    .setFunction("flipForHBar", 
+                      new ContractFunctionParameters()
+                      .addBool(selectedOption)
+                      .addUint256(0))
+                    .freezeWithSigner(signer);
+    await flipTx.executeWithSigner(signer)
 
 }
