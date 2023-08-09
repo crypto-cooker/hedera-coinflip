@@ -33,6 +33,7 @@ const appMetaData = {
 }
 
 hashconnect.pairingEvent.once(pairingData => {
+    console.log(pairingData, "PPP")
     pairingData.accountIds.forEach(id => {
         if(saveData.savedPairings.indexOf(id) === -1) 
             saveData.savedPairings.push(id);
@@ -41,16 +42,18 @@ hashconnect.pairingEvent.once(pairingData => {
 
 export const pairClient = async () => {
     let initData = await hashconnect.init(appMetaData, "testnet", false);
-    console.log(initData, "initData");
-    saveData = initData;    
-    if(saveData.savedPairings.length == 0) {
-        connectWallet();
+    console.log(initData, "III")
+    if(initData.savedPairings.length == 0) {
+        hashconnect.connectToLocalWallet();
+        //hashconnect.findLocalWallets()
+    } else {
+        console.log("already paired")
     }
     return saveData
 }
 
-export const connectWallet = () => {
-    hashconnect.connectToLocalWallet(saveData.pairingString);
+export const connectWallet = (paringStr) => {
+    hashconnect.connectToLocalWallet(paringStr);
 }
 
 export const flipHBar = async (selectedAmount, selectedOption) => {
@@ -70,5 +73,8 @@ export const flipHBar = async (selectedAmount, selectedOption) => {
                     .freezeWithSigner(signer);
     console.log(flipTx, "flipTx");
     await flipTx.executeWithSigner(signer)
+}
 
+export const disconnect = () => {
+    hashconnect.disconnect(saveData.topic);
 }

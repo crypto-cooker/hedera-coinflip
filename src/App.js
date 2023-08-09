@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 import coindata, { map } from "./constants"
 
-import { pairClient, connectWallet, flipHBar } from './hashgraph';
+import { pairClient, connectWallet, flipHBar, disconnect } from './hashgraph';
 
 
 
@@ -62,7 +62,7 @@ function App() {
                     </div>
                     <div className="coin-box">
                       <img src="./images/tail.png" alt="" />
-                      <button className={"flip-button "+ (selectedOption==false ? "selected":"")} onClick={()=>setSelectedOption(false)}>Tails</button>
+                      <button className={"flip-button "+ (selectedOption==false ? "selected":"")} onClick={()=>disconnect()}>Tails</button>
                     </div>
                   </div>
                   <div className='choose-text'>
