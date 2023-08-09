@@ -32,22 +32,21 @@ const appMetaData = {
     url: "http://localhost:3000"
 }
 
-hashconnect.pairingEvent.once(pairingData => {
-    console.log(pairingData, "PPP")
-    pairingData.accountIds.forEach(id => {
-        if(saveData.savedPairings.indexOf(id) === -1) 
-            saveData.savedPairings.push(id);
-    })
-})
+
 
 export const pairClient = async () => {
-    if(saveData.savedPairings.length==0) {
-        let initData = await hashconnect.init(appMetaData, "testnet", false);
-        console.log(initData, "III")
-        let state = await hashconnect.connect();
-        saveData.topic = state.topic;
-        saveData.pairingString = hashconnect.generatePairingString(state, "testnet", false);
-        hashconnect.findLocalWallets();
+    hashconnect.pairingEvent.on(pairingData => {
+        console.log(pairingData, "PPP")
+        pairingData.accountIds.forEach(id => {
+            if(saveData.savedPairings.indexOf(id) === -1) 
+                saveData.savedPairings.push(id);
+        })
+    })
+    let initData = await hashconnect.init(appMetaData, "testnet", false);
+    console.log(initData, "III")
+    if(initData.savedPairings.length == 0) {
+        hashconnect.connectToLocalWallet();
+        //hashconnect.findLocalWallets()
     } else {
         console.log("already paired")
     }
