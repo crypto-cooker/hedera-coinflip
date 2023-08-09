@@ -32,26 +32,21 @@ const appMetaData = {
     url: "http://localhost:3000"
 }
 
+hashconnect.pairingEvent.once(pairingData => {
+    pairingData.accountIds.forEach(id => {
+        if(saveData.savedPairings.indexOf(id) === -1) 
+            saveData.savedPairings.push(id);
+    })
+})
+
 export const pairClient = async () => {
+    let initData = await hashconnect.init(appMetaData, "testnet", false);
+    console.log(initData, "initData");
+    saveData = initData;    
     if(saveData.savedPairings.length == 0) {
-        let initData = await hashconnect.init(appMetaData, "testnet", false);
-        console.log(initData, "initData");
-        saveData = initData;
-        saveData.encryptionKey = initData.encryptionKey;
-        let state = await hashconnect.connect();
-        saveData.topic = state.topic;
-        saveData.pairingString = hashconnect.generatePairingString(state, "testnet", false);
-        hashconnect.findLocalWallets();
-        hashconnect.pairingEvent.once(pairingData => {
-            pairingData.accountIds.forEach(id => {
-                if(saveData.savedPairings.indexOf(id) === -1) 
-                    saveData.savedPairings.push(id);
-            })
-        })
-        return saveData;
-    } else {
-        return saveData;
+        connectWallet();
     }
+    return saveData
 }
 
 export const connectWallet = () => {
@@ -59,7 +54,7 @@ export const connectWallet = () => {
 }
 
 export const flipHBar = async (selectedAmount, selectedOption) => {
-    connectWallet()
+    if(saveData.savedPairings.length==0) return;
     let provider = hashconnect.getProvider("testnet", saveData.topic, saveData.savedPairings[0]);
     let signer = hashconnect.getSigner(provider);
     const flipTx = await new ContractExecuteTransaction()
