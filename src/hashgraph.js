@@ -57,6 +57,8 @@ export const flipHBar = async (selectedAmount, selectedOption) => {
     if(saveData.savedPairings.length==0) return;
     let provider = hashconnect.getProvider("testnet", saveData.topic, "0.0.451770");
     let signer = hashconnect.getSigner(provider);
+    console.log(provider, "Provider");
+    console.log(signer, "signer");
     const flipTx = await new ContractExecuteTransaction()
                     .setContractId(contractId)
                     .setGas(100000)
