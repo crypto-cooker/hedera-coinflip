@@ -3,58 +3,35 @@ import './App.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
-import { HashConnect } from 'hashconnect';
 import { useEffect, useState } from 'react';
 
 import coindata, { map } from "./constants"
 
-let hashconnect = new HashConnect(true);
+import { pairClient, connectWallet, flipHBar } from './hashgraph';
 
-const appMetaData = {
-  name: "HashPack",
-  description: "A HBAR wallet",
-  icon: "https://wallet.hashpack.app/assets/favicon/favicon.ico",
-  url: "http://localhost:3000"
-}
-let accountId = "";
-let saveData = {
-  topic: "",
-  pairingString: "",
-  privateKey: "",
-  pairedWalletData: null,
-  pairedAccounts: []
-}
+
+
 
 function App() {
 
   const [pairingData, setPairingData] = useState(null);
   const [hbarBalance, setHbarBalance] = useState(0);
-  const [selectedOption, setSelectedOption] = useState(0);
+  const [selectedOption, setSelectedOption] = useState(true);
   const [selectedToken, setSelectedToken] = useState(0);
   const [selectedAmount, setSelectedAmount] = useState(0)
   useEffect(() => {
     const findWallets = async () => {
-      const data = await hashconnect.init(appMetaData, "testnet", false);
-      if(data.savedPairings.length>0) setPairingData(data)
+      const data = await pairClient();
+      setPairingData(data)
     }
-    
-    if(hashconnect && pairingData==null) {
-      hashconnect.foundExtensionEvent.once((walletMetadata) => {
-        console.log(walletMetadata, "walletMetadata");
-      })
-      hashconnect.pairingEvent.once((pairingData) => {
-        setPairingData(pairingData)
-      })
-      findWallets() 
-    }
-  }, [hashconnect, pairingData])
+    findWallets() 
+  }, [])
 
-  const connectWallet = async () => {
-    let initData = await hashconnect.init(appMetaData, "testnet", false);
-    let state = await hashconnect.connect();
-    saveData.pairingString = await hashconnect.generatePairingString(state, "testnet", false)
-    const result = await hashconnect.findLocalWallets();
-    hashconnect.connectToLocalWallet(saveData.pairingString);
+  
+  
+
+  const flipFunc = async () => {
+    
   }
   return (
     <div className="App">
@@ -78,14 +55,14 @@ function App() {
                   <div className="bet-selecte">
                     <div className="coin-box">
                       <img src="./images/head.png" alt="" />
-                      <button className={"flip-button "+ (selectedOption==0 ? "selected":"")} onClick={()=>(setSelectedOption(0))}>Heads</button>
+                      <button className={"flip-button "+ (selectedOption==true ? "selected":"")} onClick={()=>(setSelectedOption(true))}>Heads</button>
                     </div>
                     <div className='or-section'>
                       <p>OR</p>
                     </div>
                     <div className="coin-box">
                       <img src="./images/tail.png" alt="" />
-                      <button className={"flip-button "+ (selectedOption==1 ? "selected":"")} onClick={()=>setSelectedOption(1)}>Tails</button>
+                      <button className={"flip-button "+ (selectedOption==false ? "selected":"")} onClick={()=>setSelectedOption(false)}>Tails</button>
                     </div>
                   </div>
                   <div className='choose-text'>
@@ -128,7 +105,7 @@ function App() {
                   {!pairingData && <button className="flip-button" tabIndex="0" onClick={connectWallet}>
                     Connect Wallet
                   </button>}
-                  {pairingData && <button className="flip-button" tabIndex="0" onClick={connectWallet}>
+                  {pairingData && <button className="flip-button" tabIndex="0" onClick={() => flipHBar(selectedAmount,selectedOption)}>
                     Flip Now
                   </button>}
                 </div>
