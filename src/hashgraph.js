@@ -55,7 +55,7 @@ export const connectWallet = () => {
 
 export const flipHBar = async (selectedAmount, selectedOption) => {
     if(saveData.savedPairings.length==0) return;
-    let provider = hashconnect.getProvider("testnet", saveData.topic, saveData.savedPairings[0]);
+    let provider = hashconnect.getProvider("testnet", saveData.topic, "0.0.451770");
     let signer = hashconnect.getSigner(provider);
     const flipTx = await new ContractExecuteTransaction()
                     .setContractId(contractId)
