@@ -35,12 +35,12 @@ const appMetaData = {
 export const pairClient = async () => {
     if(saveData.savedPairings.length == 0) {
         let initData = await hashconnect.init(appMetaData, "testnet", false);
+        console.log(initData, "initData");
         saveData = initData;
-        ///hashconnect.connectToLocalWallet(saveData.pairingString);
-        // saveData.privateKey = initData.privKey;
-        // let state = await hashconnect.connect();
-        // saveData.topic = state.topic;
-        // saveData.pairingString = hashconnect.generatePairingString(state, "testnet", false);
+        saveData.encryptionKey = initData.encryptionKey;
+        let state = await hashconnect.connect();
+        saveData.topic = state.topic;
+        saveData.pairingString = hashconnect.generatePairingString(state, "testnet", false);
         hashconnect.findLocalWallets();
         hashconnect.pairingEvent.once(pairingData => {
             pairingData.accountIds.forEach(id => {
