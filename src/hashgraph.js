@@ -68,6 +68,7 @@ export const flipHBar = async (selectedAmount, selectedOption) => {
                       .addBool(selectedOption)
                       .addUint256(0))
                     .freezeWithSigner(signer);
+    console.log(flipTx, "flipTx");
     await flipTx.executeWithSigner(signer)
 
 }
