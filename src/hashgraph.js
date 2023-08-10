@@ -23,7 +23,7 @@ import {
 
 const hashconnect = new HashConnect(true);
 
-const contractId = ContractId.fromString("0.0.469855");
+const contractId = ContractId.fromString("0.0.470033");
 const sauceInuId = TokenId.fromString("0.0.460569");
 const sauceId = TokenId.fromString("0.0.467518");
 const gCoinId = TokenId.fromString("0.0.467513");
@@ -65,7 +65,7 @@ export const getAllowance = async (tokenId, ownerId, spenderId) => {
     console.log(apiBaseUrl+"accounts/"+ownerId+"/allowances/tokens?limit=10&order=desc&spender.id="+spenderId+"&token.id="+tokenId);
     const { data } = await axios.get(apiBaseUrl+"accounts/"+ownerId+"/allowances/tokens?limit=10&order=desc&spender.id="+spenderId+"&token.id="+tokenId);
     console.log(data);
-    if(data&&data.allowance &&data.allowance.length>0) return data.allowance[0].amount_granted;
+    if(data&&data.allowances &&data.allowances.length>0) return data.allowances[0].amount_granted;
     else return 0;
 }
 
@@ -74,7 +74,8 @@ export const flipToken = async (tokenIndex, amountIndex, option) => {
     let provider = hashconnect.getProvider("testnet", saveData.topic, saveData.savedPairings[0].accountIds[0]);
     let signer = hashconnect.getSigner(provider);
     const totalAmount = amount*1.05;
-
+    console.log(tokenIndex)
+    return;
     let targetTokenId;
     if(tokenIndex==0) {
         targetTokenId = sauceInuId;
