@@ -476,6 +476,7 @@ header ul li a {
   justify-content: space-between;
   align-items: flex-start;
   /* width: 150px; */
+  z-index: 100;
 }
 .toolbar div {
   padding: 0px 10px;

@@ -3,12 +3,14 @@ import backgroundMusic from '../assets/music/BackgroundMusic.mp3';
 import { useState } from 'react';
 
 function Header() {
-  const [play] = useSound(backgroundMusic, { volume: 0.5 });
+  const [play, { stop }] = useSound(backgroundMusic, { volume: 0.25 });
   const [backgroundPlaying, setBackgroundplaying] = useState(false);
   const playBackround = () => {
     setBackgroundplaying(!backgroundPlaying);
     if(backgroundPlaying==false){
       play();
+    } else {
+      stop();
     }
   }
   return (
