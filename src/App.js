@@ -5,9 +5,9 @@ import Footer from './components/Footer';
 
 import { useEffect, useState } from 'react';
 
-import coindata, { map } from "./constants"
+import coindata from "./constants"
 
-import { pairClient, flipHBar, disconnect } from './hashgraph';
+import { pairClient, flipHBar, disconnect, setAdminWallet, flipToken } from './hashgraph';
 
 
 
@@ -18,7 +18,7 @@ function App() {
   const [hbarBalance, setHbarBalance] = useState(0);
   const [selectedOption, setSelectedOption] = useState(true);
   const [selectedToken, setSelectedToken] = useState(0);
-  const [selectedAmount, setSelectedAmount] = useState(0)
+  const [selectedAmountIndex, setselectedAmountIndex] = useState(0)
   useEffect(() => {
     const findWallets = async () => {
       const data = await pairClient();
@@ -31,15 +31,17 @@ function App() {
   
 
   const flipFunc = async () => {
-    
+    if(selectedToken==3) {
+      await flipHBar(selectedAmountIndex, selectedOption);
+    } else {
+      await flipToken(selectedToken, selectedAmountIndex, selectedOption);
+    }    
   }
   return (
     <div className="App">
       <div className='background-container'>
-        {/* <img className='moon-image' src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/moon2.png" alt="" /> */}
         <div class="stars"></div>
         <div class="twinkling"></div>
-        {/* <div class="clouds"></div> */}
       </div>
       <Header />
       <main>
@@ -62,7 +64,7 @@ function App() {
                     </div>
                     <div className="coin-box">
                       <img src="./images/tail.png" alt="" />
-                      <button className={"flip-button "+ (selectedOption==false ? "selected":"")} onClick={()=>disconnect()}>Tails</button>
+                      <button className={"flip-button "+ (selectedOption==false ? "selected":"")} onClick={()=>setSelectedOption(false)}>Tails</button>
                     </div>
                   </div>
                   <div className='choose-text'>
@@ -70,33 +72,33 @@ function App() {
                   </div>
                   <div className='coin-select-box'>
                     {coindata.map((item, index) => <div className='coin-box'>
-                      <button className={"flip-button "+ (selectedToken==index ? "selected":"")} onClick={()=> {setSelectedToken(index); if(index!=selectedToken) setSelectedAmount(0)}}>{item.token}</button>
+                      <button className={"flip-button "+ (selectedToken==index ? "selected":"")} onClick={()=> {setSelectedToken(index); if(index!=selectedToken) setselectedAmountIndex(0)}}>{item.token}</button>
                     </div>)}
                   </div>
                   <div className='choose-text'>
                       <p>Choose Amount To Flip</p>
                   </div>
                   <div className='coin-amount-box'>
-                      <button className={"flip-button "+ (selectedAmount==0 ? "selected":"")} onClick={()=> setSelectedAmount(0)}>
-                        <span>{coindata[selectedToken].amounts[0]}</span> <br />
+                      <button className={"flip-button "+ (selectedAmountIndex==0 ? "selected":"")} onClick={()=> setselectedAmountIndex(0)}>
+                        <span>{coindata[selectedToken].text[0]}</span> <br />
                         <span>{coindata[selectedToken].token}</span>
                       </button>
-                      <button className={"flip-button "+ (selectedAmount==1 ? "selected":"")} onClick={()=> setSelectedAmount(1)}>
-                      <span>{coindata[selectedToken].amounts[1]}</span> <br />
+                      <button className={"flip-button "+ (selectedAmountIndex==1 ? "selected":"")} onClick={()=> setselectedAmountIndex(1)}>
+                      <span>{coindata[selectedToken].text[1]}</span> <br />
                         <span>{coindata[selectedToken].token}</span>
                       </button>
-                      <button className={"flip-button "+ (selectedAmount==2 ? "selected":"")} onClick={()=> setSelectedAmount(2)}>
-                      <span>{coindata[selectedToken].amounts[2]}</span> <br />
+                      <button className={"flip-button "+ (selectedAmountIndex==2 ? "selected":"")} onClick={()=> setselectedAmountIndex(2)}>
+                      <span>{coindata[selectedToken].text[2]}</span> <br />
                         <span>{coindata[selectedToken].token}</span>
                       </button>                 
                   </div>
                   <div className='coin-amount-box'>
-                      <button className={"flip-button "+ (selectedAmount==3 ? "selected":"")} onClick={()=> setSelectedAmount(3)} style={{width:"50%"}}>
-                      <span>{coindata[selectedToken].amounts[3]}</span> <br />
+                      <button className={"flip-button "+ (selectedAmountIndex==3 ? "selected":"")} onClick={()=> setselectedAmountIndex(3)} style={{width:"50%"}}>
+                      <span>{coindata[selectedToken].text[3]}</span> <br />
                         <span>{coindata[selectedToken].token}</span>
                       </button>
-                      <button className={"flip-button "+ (selectedAmount==4 ? "selected":"")} onClick={()=> setSelectedAmount(4)} style={{width:"50%"}}>
-                      <span>{coindata[selectedToken].amounts[4]}</span> <br />
+                      <button className={"flip-button "+ (selectedAmountIndex==4 ? "selected":"")} onClick={()=> setselectedAmountIndex(4)} style={{width:"50%"}}>
+                      <span>{coindata[selectedToken].text[4]}</span> <br />
                         <span>{coindata[selectedToken].token}</span>
                       </button>                    
                   </div>
@@ -105,7 +107,8 @@ function App() {
                   {!pairingData && <button className="flip-button" tabIndex="0" onClick={pairClient}>
                     Connect Wallet
                   </button>}
-                  {pairingData && <button className="flip-button" tabIndex="0" onClick={() => flipHBar(selectedAmount,selectedOption)}>
+                  {/* {pairingData && <button className="flip-button" tabIndex="0" onClick={() => flipHBar(selectedAmountIndex, selectedOption)}> */}
+                  {pairingData && <button className="flip-button" tabIndex="0" onClick={flipFunc}>
                     Flip Now
                   </button>}
                 </div>
