@@ -74,8 +74,6 @@ export const flipToken = async (tokenIndex, amountIndex, option) => {
     let provider = hashconnect.getProvider("testnet", saveData.topic, saveData.savedPairings[0].accountIds[0]);
     let signer = hashconnect.getSigner(provider);
     const totalAmount = amount*1.05;
-    console.log(tokenIndex)
-    return;
     let targetTokenId;
     if(tokenIndex==0) {
         targetTokenId = sauceInuId;
