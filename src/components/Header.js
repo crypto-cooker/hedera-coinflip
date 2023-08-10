@@ -1,11 +1,28 @@
+import useSound from 'use-sound';
+import backgroundMusic from '../assets/music/BackgroundMusic.mp3';
+import { useState } from 'react';
+
 function Header() {
+  const [play] = useSound(backgroundMusic, { volume: 0.5 });
+  const [backgroundPlaying, setBackgroundplaying] = useState(false);
+  const playBackround = () => {
+    setBackgroundplaying(!backgroundPlaying);
+    if(backgroundPlaying==false){
+      play();
+    }
+  }
   return (
     <header>
-        <ul>
-            <li><a href="https://sauceinu.com/">Website</a></li>
-            <li><a href="https://twitter.com/sauceinu">Twitter</a></li>
-            <li><a href="https://discord.com/invite/sauceinu">Discord</a></li>
-        </ul>
+        <div className="toolbar">
+          <div onClick={playBackround}>
+            <img className="sound-img" src={backgroundPlaying ? "./images/on.png": "./images/off.png"} />
+            <p className="text-green">MUSIC</p>
+          </div>
+          <div>
+            <img className="sound-img" src="./images/on.png" />
+            <p className="text-green">SOUND</p>
+          </div>
+        </div>
     </header>
   );
 //   return (

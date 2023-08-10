@@ -40,8 +40,8 @@ function App() {
   return (
     <div className="App">
       <div className='background-container'>
-        <div class="stars"></div>
-        <div class="twinkling"></div>
+        <div className="stars"></div>
+        <div className="twinkling"></div>
       </div>
       <Header />
       <main>
@@ -71,7 +71,7 @@ function App() {
                       <p>Choose Coin To Flip</p>
                   </div>
                   <div className='coin-select-box'>
-                    {coindata.map((item, index) => <div className='coin-box'>
+                    {coindata.map((item, index) => <div key={index} className='coin-box'>
                       <button className={"flip-button "+ (selectedToken==index ? "selected":"")} onClick={()=> {setSelectedToken(index); if(index!=selectedToken) setselectedAmountIndex(0)}}>{item.token}</button>
                     </div>)}
                   </div>
@@ -120,7 +120,7 @@ function App() {
           </div>
         </div>
       </main>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }
