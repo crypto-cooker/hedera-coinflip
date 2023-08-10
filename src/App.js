@@ -103,18 +103,18 @@ function App() {
                       <p>Choose Amount To Flip</p>
                   </div>
                   <div className='coin-amount-box'>
-                      <button className={"flip-button "+ (selectedAmountIndex==0 ? "selected":"")} onClick={()=> (selectedAmountIndex!=0?clickPlay():null,setselectedAmountIndex(0))}>
-                        <span>{coindata[selectedToken].text[0]}</span> <br />
-                        <span>{coindata[selectedToken].token}</span>
-                      </button>
-                      <button className={"flip-button "+ (selectedAmountIndex==1 ? "selected":"")} onClick={()=> (selectedAmountIndex!=1?clickPlay():null,setselectedAmountIndex(1))}>
-                      <span>{coindata[selectedToken].text[1]}</span> <br />
-                        <span>{coindata[selectedToken].token}</span>
-                      </button>
-                      <button className={"flip-button "+ (selectedAmountIndex==2 ? "selected":"")} onClick={()=> (selectedAmountIndex!=2?clickPlay():null,setselectedAmountIndex(2))}>
-                      <span>{coindata[selectedToken].text[2]}</span> <br />
-                        <span>{coindata[selectedToken].token}</span>
-                      </button>                 
+                    <button className={"flip-button "+ (selectedAmountIndex==0 ? "selected":"")} onClick={()=> (selectedAmountIndex!=0?clickPlay():null,setselectedAmountIndex(0))}>
+                      <span>{coindata[selectedToken].text[0]}</span> <br />
+                      <span>{coindata[selectedToken].token}</span>
+                    </button>
+                    <button className={"flip-button "+ (selectedAmountIndex==1 ? "selected":"")} onClick={()=> (selectedAmountIndex!=1?clickPlay():null,setselectedAmountIndex(1))}>
+                    <span>{coindata[selectedToken].text[1]}</span> <br />
+                      <span>{coindata[selectedToken].token}</span>
+                    </button>
+                    <button className={"flip-button "+ (selectedAmountIndex==2 ? "selected":"")} onClick={()=> (selectedAmountIndex!=2?clickPlay():null,setselectedAmountIndex(2))}>
+                    <span>{coindata[selectedToken].text[2]}</span> <br />
+                      <span>{coindata[selectedToken].token}</span>
+                    </button>                 
                   </div>
                   <div className='coin-amount-box'>
                       <button className={"flip-button "+ (selectedAmountIndex==3 ? "selected":"")} onClick={()=> (selectedAmountIndex!=3?clickPlay():null,setselectedAmountIndex(3))} style={{width:"50%"}}>

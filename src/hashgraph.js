@@ -1,4 +1,5 @@
 import { HashConnect } from "hashconnect";
+import axios from "axios";
 import { 
     Client,
     AccountAllowanceApproveTransaction,
@@ -22,7 +23,7 @@ import {
 
 const hashconnect = new HashConnect(true);
 
-const contractId = ContractId.fromString("0.0.467536");
+const contractId = ContractId.fromString("0.0.469855");
 const sauceInuId = TokenId.fromString("0.0.460569");
 const sauceId = TokenId.fromString("0.0.467518");
 const gCoinId = TokenId.fromString("0.0.467513");
@@ -38,6 +39,8 @@ const appMetaData = {
     icon: "https://wallet.hashpack.app/assets/favicon/favicon.ico",
     url: "http://localhost:3000"
 }
+
+const apiBaseUrl = "https://testnet.mirrornode.hedera.com/api/v1/";
 
 
 
@@ -58,6 +61,13 @@ export const pairClient = async () => {
     return saveData
 }
 
+export const getAllowance = async (tokenId, ownerId, spenderId) => {
+    console.log(apiBaseUrl+"accounts/"+ownerId+"/allowances/tokens?limit=10&order=desc&spender.id="+spenderId+"&token.id="+tokenId);
+    const { data } = await axios.get(apiBaseUrl+"accounts/"+ownerId+"/allowances/tokens?limit=10&order=desc&spender.id="+spenderId+"&token.id="+tokenId);
+    console.log(data);
+    if(data&&data.allowance &&data.allowance.length>0) return data.allowance[0].amount_granted;
+    else return 0;
+}
 
 export const flipToken = async (tokenIndex, amountIndex, option) => {
     const amount = coindata[tokenIndex].amounts[amountIndex];
@@ -65,11 +75,6 @@ export const flipToken = async (tokenIndex, amountIndex, option) => {
     let signer = hashconnect.getSigner(provider);
     const totalAmount = amount*1.05;
 
-
-    // const tmp =  await new AccountInfoQuery().setAccountId(signer.getAccountId()).executeWithSigner(signer);
-    // console.log(tmp, "GGGGGGEEEE");
-    // return;
-    // const allowanceAmount = new AccountAllowanceApproveTransaction().tokenApprovals
     let targetTokenId;
     if(tokenIndex==0) {
         targetTokenId = sauceInuId;
@@ -80,11 +85,14 @@ export const flipToken = async (tokenIndex, amountIndex, option) => {
     } else {
         return;
     }
-    const allowanceTx = new AccountAllowanceApproveTransaction()
-            .approveTokenAllowance(targetTokenId, signer.getAccountId(), AccountId.fromString(contractId.toString()), 1000000*10**7)
+    const tokenAllowance = await getAllowance(targetTokenId.toString(), signer.getAccountId().toString(), contractId.toString());
+    if(tokenAllowance<totalAmount) {
+        const allowanceTx = new AccountAllowanceApproveTransaction()
+            .approveTokenAllowance(targetTokenId, signer.getAccountId(), AccountId.fromString(contractId.toString()), 1000000000*10**7)
             .freezeWithSigner(signer);
         const allowanceSign = await (await allowanceTx).signWithSigner(signer);
         const allowanceSubmit = await allowanceSign.executeWithSigner(signer);
+    }
         
     const flipTx = await new ContractExecuteTransaction()
                     .setContractId(contractId)
