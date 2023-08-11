@@ -1,25 +1,15 @@
 import { HashConnect } from "hashconnect";
 import axios from "axios";
 import { 
-    Client,
     AccountAllowanceApproveTransaction,
-    TokenAllowance,
     AccountId, 
-    PrivateKey, 
-    ContractCreateFlow, 
-    AccountGetInfoQuery,
     ContractExecuteTransaction, 
     ContractFunctionParameters, 
     ContractId,
-    ContractInfoQuery, 
-    TokenAssociateTransaction,
-    AccountInfoQuery,
-    TransferTransaction,
-    TokenId,
-    TokenA
-  } from '@hashgraph/sdk';
+    TokenId
+} from '@hashgraph/sdk';
 
-  import coindata from "./constants"
+import coindata from "./constants"
 
 const hashconnect = new HashConnect(true);
 

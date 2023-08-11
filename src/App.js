@@ -13,12 +13,12 @@ import soundMusic from './assets/music/Click.mp3';
 function App() {
 
   const [pairingData, setPairingData] = useState(null);
-  const [hbarBalance, setHbarBalance] = useState(0);
   const [selectedOption, setSelectedOption] = useState(true);
   const [selectedToken, setSelectedToken] = useState(0);
-  const [selectedAmountIndex, setselectedAmountIndex] = useState(0)
+  const [selectedAmountIndex, setselectedAmountIndex] = useState(0);
+  const [fliping, setFliping] = useState(false);
   
-  const [play, { stop }] = useSound(backgroundMusic, { volume: 0.25 });
+  const [play, { stop }] = useSound(backgroundMusic, { volume: 0.5 });
   const [playSound] = useSound(soundMusic, { volume: 0.25 });
   const [backgroundPlaying, setBackgroundplaying] = useState(false);
   const [clickPlaying, setClickPlaying] = useState(false);
@@ -42,11 +42,19 @@ function App() {
   }, [])
 
   const flipFunc = async () => {
-    if(selectedToken==3) {
-      await flipHBar(selectedAmountIndex, selectedOption);
-    } else {
-      await flipToken(selectedToken, selectedAmountIndex, selectedOption);
-    }    
+    try {
+      setFliping(true);
+      if(selectedToken==3) {
+        await flipHBar(selectedAmountIndex, selectedOption);
+      } else {
+        await flipToken(selectedToken, selectedAmountIndex, selectedOption);
+      }
+      setFliping(false)
+    } catch (error) {
+      console.log("Error:", error.message);
+      setFliping(false)
+    }
+    
   }
   return (
     <div className="App">
@@ -57,7 +65,7 @@ function App() {
       <header>
         <div className="toolbar">
           <div onClick={playBackround}>
-            <img className="sound-img" src={backgroundPlaying ? "./images/on.png": "./images/off.png"} />
+            <img className="sound-img" src={backgroundPlaying ? "./images/MusicON.png": "./images/off.png"} />
             <p className="text-green">MUSIC</p>
           </div>
           <div onClick={()=> setClickPlaying(!clickPlaying)}>
@@ -73,8 +81,9 @@ function App() {
               
               <p className="bet-on-title">SAUCE-FLIP</p>
               <div className='flip-inner-box'>
-                {!pairingData && <div className='logo-img-section'><img className='logo-img' src="./images/logo.png" alt="SAUCE-FLIP" /></div>}
-                {pairingData && 
+                {fliping && <div className='logo-img-section'><img className='logo-img' src="./images/spinning.gif" alt="SAUCE-FLIP" /></div> }
+                {!fliping && !pairingData && <div className='logo-img-section'><img className='logo-img' src="./images/logo.png" alt="SAUCE-FLIP" /></div>}
+                {!fliping && pairingData && 
                 <>
                   <div className="bet-selecte">
                     <div className="coin-box">
@@ -127,7 +136,7 @@ function App() {
                       </button>                    
                   </div>
                 </>}
-                <div className='connect-btn-section'>
+                {!fliping&& <div className='connect-btn-section'>
                   {!pairingData && <button className="flip-button" tabIndex="0" onClick={pairClient}>
                     Connect Wallet
                   </button>}
@@ -135,7 +144,12 @@ function App() {
                   {pairingData && <button className="flip-button" tabIndex="0" onClick={flipFunc}>
                     Flip Now
                   </button>}
-                </div>
+                </div>}
+                {fliping&& <div className='connect-btn-section'>
+                  <button className="flip-button" tabIndex="0">
+                    Waiting
+                  </button>
+                </div>}
               </div>
             </div>
             {/* <div className="leaderboard">
