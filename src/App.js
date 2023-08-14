@@ -33,7 +33,7 @@ function App() {
   const [clickPlaying, setClickPlaying] = useState(false);
   const playBackround = () => {
     setBackgroundplaying(!backgroundPlaying);
-    if(backgroundPlaying==false){
+    if(backgroundPlaying==true){
       play();
     } else {
       stop();
