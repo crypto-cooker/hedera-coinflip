@@ -538,6 +538,7 @@ footer ul li a {
   }
   .flip-button {
     padding: 3px 5px;
+    font-size: 11px;
   }
   .bet-on-title {
     font-size: 36px !important;
@@ -580,5 +581,8 @@ footer ul li a {
   footer ul li {
     margin-left: 8px;
     margin-right: 8px;
+  }
+  .choose-text p {
+    font-size: 18px;
   }
 }
