@@ -8,15 +8,10 @@ import {
     ContractId,
     TokenId
 } from '@hashgraph/sdk';
-
 import coindata from "./constants"
 
 const hashconnect = new HashConnect(true);
-
 const contractId = ContractId.fromString("0.0.470033");
-const sauceInuId = TokenId.fromString("0.0.460569");
-const sauceId = TokenId.fromString("0.0.467518");
-const gCoinId = TokenId.fromString("0.0.467513");
 let saveData = {
     topic: "",
     pairingString: "",
@@ -42,7 +37,7 @@ export const pairClient = async () => {
     })
     let initData = await hashconnect.init(appMetaData, "testnet", false);
     saveData = initData;
-    if(initData.savedPairings.length == 0) {
+    if(initData.savedPairings.length === 0) {
         hashconnect.connectToLocalWallet();
     } else {
         console.log("already paired")
@@ -63,17 +58,10 @@ export const flipToken = async (tokenIndex, amountIndex, option) => {
     const amount = coindata[tokenIndex].amounts[amountIndex];
     let provider = hashconnect.getProvider("testnet", saveData.topic, saveData.savedPairings[0].accountIds[0]);
     let signer = hashconnect.getSigner(provider);
+    const beforeBal = (await provider.getAccountBalance(signer.getAccountId())).tokens.get(coindata[tokenIndex].address);
+    console.log(beforeBal, "beforeBal")
     const totalAmount = amount*1.05;
-    let targetTokenId;
-    if(tokenIndex==0) {
-        targetTokenId = sauceInuId;
-    } else if(tokenIndex==1) {
-        targetTokenId = sauceId;
-    } else if(tokenIndex==2) {
-        targetTokenId = gCoinId
-    } else {
-        return;
-    }
+    let targetTokenId = TokenId.fromString(coindata[tokenIndex].address);
     const tokenAllowance = await getAllowance(targetTokenId.toString(), signer.getAccountId().toString(), contractId.toString());
     if(tokenAllowance<totalAmount) {
         const allowanceTx = new AccountAllowanceApproveTransaction()
@@ -92,15 +80,20 @@ export const flipToken = async (tokenIndex, amountIndex, option) => {
                       .addUint256(tokenIndex)
                       .addUint256(amountIndex))
                     .freezeWithSigner(signer);
-    await flipTx.executeWithSigner(signer);
+    await flipTx.executeWithSigner(signer)
+    const afterBalBal = (await provider.getAccountBalance(signer.getAccountId())).tokens.get(coindata[tokenIndex].address);
+    console.log(afterBalBal, "beforeBal");
+    console.log(afterBalBal.compare(beforeBal), "beforeBal")
+    return afterBalBal.compare(beforeBal) == 1;                 
 }
 
 export const flipHBar = async (selectedAmountIndex, selectedOption) => {
+    let provider = hashconnect.getProvider("testnet", saveData.topic, saveData.savedPairings[0].accountIds[0]);
+    let signer = hashconnect.getSigner(provider);
+    const beforeBal = (await provider.getAccountBalance(signer.getAccountId())).hbars.toBigNumber();
     const amount = coindata[3].amounts[selectedAmountIndex];
     const totalAmount = amount*1.05;
     if(saveData.savedPairings.length==0) return;
-    let provider = hashconnect.getProvider("testnet", saveData.topic, saveData.savedPairings[0].accountIds[0]);
-    let signer = hashconnect.getSigner(provider);
     const flipTx = await new ContractExecuteTransaction()
                     .setContractId(contractId)
                     .setGas(100000)
@@ -111,6 +104,8 @@ export const flipHBar = async (selectedAmountIndex, selectedOption) => {
                       .addUint256(selectedAmountIndex))
                     .freezeWithSigner(signer);
     await flipTx.executeWithSigner(signer)
+    const afterBal = (await provider.getAccountBalance(signer.getAccountId())).hbars.toBigNumber();
+    return afterBal.comparedTo(beforeBal) == 1;
 }
 
 export const setAdminWallet = async () => {

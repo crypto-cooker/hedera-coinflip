@@ -1,10 +1,11 @@
 import './App.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import coindata from "./constants"
 import { pairClient, flipHBar, flipToken } from './hashgraph';
 import useSound from 'use-sound';
+import Confetti from "react-confetti";
 import backgroundMusic from './assets/music/BackgroundMusic.mp3';
 import soundMusic from './assets/music/Click.mp3';
 
@@ -16,8 +17,16 @@ function App() {
   const [selectedOption, setSelectedOption] = useState(true);
   const [selectedToken, setSelectedToken] = useState(0);
   const [selectedAmountIndex, setselectedAmountIndex] = useState(0);
-  const [fliping, setFliping] = useState(false);
-  
+  const [fliping, setFliping] = useState(0);
+  const [status, setStatus] = useState(false);
+  const confetiRef = useRef(null);
+  const [height, setHeight] = useState(null);
+  const [width, setWidth] = useState(null);
+  const [statusText, setStatusText] = useState("Waiting");
+  useEffect(() => {
+    setHeight(confetiRef.current.clientHeight);
+    setWidth(confetiRef.current.clientWidth);
+  }, []);
   const [play, { stop }] = useSound(backgroundMusic, { volume: 0.5 });
   const [playSound] = useSound(soundMusic, { volume: 0.25 });
   const [backgroundPlaying, setBackgroundplaying] = useState(false);
@@ -43,21 +52,35 @@ function App() {
 
   const flipFunc = async () => {
     try {
-      setFliping(true);
+      setFliping(1);
+      setStatusText("Waiting");
+      let status = false;
       if(selectedToken==3) {
-        await flipHBar(selectedAmountIndex, selectedOption);
+        status = await flipHBar(selectedAmountIndex, selectedOption);
       } else {
-        await flipToken(selectedToken, selectedAmountIndex, selectedOption);
+        status = await flipToken(selectedToken, selectedAmountIndex, selectedOption);        
       }
-      setFliping(false)
+      setStatus(status)
+      if(status) {
+        setStatusText("You win!, try again");
+      } else {
+        setStatusText("You lost!, try again");
+      }
+      setFliping(2)
     } catch (error) {
       console.log("Error:", error.message);
-      setFliping(false)
+      setFliping(2)
+      setStatusText("Tx denied, try again");
+      setStatus(false)
     }
-    
+  }
+  const tryAgain = () => {
+    setStatus(false);
+    if(fliping!=1) setFliping(0);
   }
   return (
-    <div className="App">
+    <div className="App" ref={confetiRef}>
+      <div> {status==1 && <Confetti numberOfPieces={150} width={width} height={height} /> }</div>
       <div className='background-container'>
         <div className="stars"></div>
         <div className="twinkling"></div>
@@ -74,16 +97,15 @@ function App() {
           </div>
         </div>
       </header>
-      <main>
+      <main >
         <div className="container">
           <div className="main-content">
             <div className="flip-box">
-              
               <p className="bet-on-title">SAUCE-FLIP</p>
               <div className='flip-inner-box'>
-                {fliping && <div className='logo-img-section'><img className='logo-img' src="./images/spinning.gif" alt="SAUCE-FLIP" /></div> }
-                {!fliping && !pairingData && <div className='logo-img-section'><img className='logo-img' src="./images/logo.png" alt="SAUCE-FLIP" /></div>}
-                {!fliping && pairingData && 
+                {fliping==1 && <div className='logo-img-section'><img className='logo-img' src="./images/spinning.gif" alt="SAUCE-FLIP" /></div> }
+                {fliping!=1 && !pairingData && <div className='logo-img-section'><img className='logo-img' src="./images/logo.png" alt="SAUCE-FLIP" /></div>}
+                {fliping==0 && pairingData && 
                 <>
                   <div className="bet-selecte">
                     <div className="coin-box">
@@ -145,9 +167,9 @@ function App() {
                     Flip Now
                   </button>}
                 </div>}
-                {fliping&& <div className='connect-btn-section'>
-                  <button className="flip-button" tabIndex="0">
-                    Waiting
+                {(fliping==1 || fliping==2 ) && <div className='connect-btn-section'>
+                  <button className="flip-button" tabIndex="0" onClick={tryAgain}>
+                    {statusText}
                   </button>
                 </div>}
               </div>
