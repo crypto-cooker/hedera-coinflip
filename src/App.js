@@ -8,6 +8,9 @@ import useSound from 'use-sound';
 import Confetti from "react-confetti";
 import backgroundMusic from './assets/music/BackgroundMusic.mp3';
 import soundMusic from './assets/music/Click.mp3';
+import winnerMusic from './assets/music/Winner.mp3';
+import loserMusic from './assets/music/Lose.wav';
+import spinMusic from './assets/music/Spin.mp3';
 
 
 
@@ -28,19 +31,26 @@ function App() {
     setWidth(confetiRef.current.clientWidth);
   }, []);
   const [play, { stop }] = useSound(backgroundMusic, { volume: 0.5 });
-  const [playSound] = useSound(soundMusic, { volume: 0.25 });
+  const [playSound] = useSound(soundMusic, { volume: 0.5 });
+  const [winnerSound] = useSound(winnerMusic);
+  const [loserSound] = useSound(loserMusic);
+  const [spinSound] = useSound(spinMusic);
   const [backgroundPlaying, setBackgroundplaying] = useState(false);
   const [clickPlaying, setClickPlaying] = useState(false);
   const playBackround = () => {
-    setBackgroundplaying(!backgroundPlaying);
-    if(backgroundPlaying==true){
+    if(backgroundPlaying== false) {
       play();
+      setBackgroundplaying(true);
     } else {
       stop();
+      setBackgroundplaying(false);
     }
   }
 
   const clickPlay = () => { if(clickPlaying==true) playSound(); }
+  const winnerPlay = () => { if(clickPlaying==true) winnerSound(); }
+  const loserPlay = () => { if(clickPlaying==true) loserSound(); }
+  const spinPlay = () => { if(clickPlaying==true) spinSound(); }
   
   useEffect(() => {
     const findWallets = async () => {
@@ -54,6 +64,7 @@ function App() {
     try {
       setFliping(1);
       setStatusText("Waiting");
+      spinPlay();
       let status = false;
       if(selectedToken==3) {
         status = await flipHBar(selectedAmountIndex, selectedOption);
@@ -63,8 +74,10 @@ function App() {
       setStatus(status)
       if(status) {
         setStatusText("You win!, try again");
+        winnerPlay();
       } else {
         setStatusText("You lost!, try again");
+        loserPlay();
       }
       setFliping(2)
     } catch (error) {
@@ -76,7 +89,7 @@ function App() {
   }
   const tryAgain = () => {
     setStatus(false);
-    if(fliping!=1) setFliping(0);
+    if(fliping!=1) {clickPlay();setFliping(0)};
   }
   return (
     <div className="App" ref={confetiRef}>
