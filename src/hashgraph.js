@@ -11,7 +11,7 @@ import {
 import coindata from "./constants"
 
 const hashconnect = new HashConnect(true);
-const contractId = ContractId.fromString("0.0.470033");
+const contractId = ContractId.fromString("0.0.487520");
 let saveData = {
     topic: "",
     pairingString: "",
@@ -19,7 +19,7 @@ let saveData = {
     savedPairings: []
 }
 const appMetaData = {
-    name: "SAUCEINU Coinflip",
+    name: "sauce-flip",
     description: "A HBAR wallet",
     icon: "https://wallet.hashpack.app/assets/favicon/favicon.ico",
     url: "http://localhost:3000"
@@ -60,7 +60,7 @@ export const flipToken = async (tokenIndex, amountIndex, option) => {
     let signer = hashconnect.getSigner(provider);
     const beforeBal = (await provider.getAccountBalance(signer.getAccountId())).tokens.get(coindata[tokenIndex].address);
     console.log(beforeBal, "beforeBal")
-    const totalAmount = amount*1.05;
+    const totalAmount = amount*1.025;
     let targetTokenId = TokenId.fromString(coindata[tokenIndex].address);
     const tokenAllowance = await getAllowance(targetTokenId.toString(), signer.getAccountId().toString(), contractId.toString());
     if(tokenAllowance<totalAmount) {
@@ -92,7 +92,7 @@ export const flipHBar = async (selectedAmountIndex, selectedOption) => {
     let signer = hashconnect.getSigner(provider);
     const beforeBal = (await provider.getAccountBalance(signer.getAccountId())).hbars.toBigNumber();
     const amount = coindata[3].amounts[selectedAmountIndex];
-    const totalAmount = amount*1.05;
+    const totalAmount = amount*1.025;
     if(saveData.savedPairings.length==0) return;
     const flipTx = await new ContractExecuteTransaction()
                     .setContractId(contractId)
